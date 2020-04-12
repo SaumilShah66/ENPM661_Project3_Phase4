@@ -3,13 +3,24 @@ This project is the simulation of the turtlebot on gazebo for the verification o
 ## Dependencies
 
 -- ROS kinetic
--- python2
+-- python 2.7
 -- Gazebo
 -- turtlebot package
 -- numpy
 -- matplotlib
 
 ## Run the planner
+
+You can run the Planner with following commands.
+
+```
+cd project3_ws/src/planner/src/scripts
+python Phase3.py --ShowExploration=1 --Start="[-4.5,-4.5,0]" --End
+="[4.5,4.5,0]" --Weight=1.3
+```
+You can change the start and end positions. Add weight values to implement weighted A* algorithm.
+
+## Run the Simulation
 
 Once you are in workspace, build the package and add this package to the source with the following commands.
 

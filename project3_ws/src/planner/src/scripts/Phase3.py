@@ -410,16 +410,15 @@ if __name__ == '__main__':
 	Parser.add_argument('--End', default="[0, -3, 0]", help='Give final point')
 	Parser.add_argument('--RobotRadius', default=0.177, help='Give robot radius')
 	Parser.add_argument('--Clearance', default=0.1, help='Give robot clearance')
-	Parser.add_argument('--ShowAnimation', default=1, help='1 if want to show animation else 0')
-	Parser.add_argument('--Framerate', default=30, help='Will show next step after this many steps. Made for fast viewing')
+	Parser.add_argument('--ShowExploration', default=0, help='1 if want to exploration animation else 0')
+	Parser.add_argument('--ShowPath', default=1, help='1 if want to show explored path else 0')
 	Parser.add_argument('--thetaStep', default=30, help='Possibilities of action for angle')
 	Parser.add_argument('--StepSize', default=2, help='Step size')
 	Parser.add_argument('--Threshold', default=0.01, help='Threshold value for appriximation')
 	Parser.add_argument('--GoalThreshold', default=0.1, help='Circle radius for goal point')
 	Parser.add_argument('--WheelRadius', default=0.038, help='Radius of the robot wheel in meters')
 	Parser.add_argument('--WheelLength', default=0.320, help='Distance between two wheels')
-	Parser.add_argument('--LeftRPM', default=10, help='RPM of left wheel')
-	Parser.add_argument('--RightRPM', default=10, help='RPM of right wheel')
+	Parser.add_argument('--RPM', default="[10,10]", help='RPM of left wheel')
 	Parser.add_argument('--Weight', default=1, help='Weight for cost to go')
 	Args = Parser.parse_args()
 
@@ -429,8 +428,6 @@ if __name__ == '__main__':
 	end = Args.End
 	r = float(Args.RobotRadius)
 	c = float(Args.Clearance)
-	animation = int(Args.ShowAnimation)
-	framerate = int(Args.Framerate)
 	StepSize = int(Args.StepSize)
 	Threshold = float(Args.Threshold)
 	GoalThreshold = float(Args.GoalThreshold)
@@ -440,15 +437,17 @@ if __name__ == '__main__':
 	print(initial)
 	print(goal)
 	wheelLength = float(Args.WheelLength) 
-	Ur = float(Args.RightRPM)
-	Ul = float(Args.LeftRPM) 
+	
+	rpm = [float(i) for i in Args.RPM[1:-1].split(',')]
+	Ur, Ul = rpm[0], rpm[1]
+
 	wheelRadius = float(Args.   WheelRadius)
 	weight = float(Args.Weight)
 
 	solver = pathFinder(initial, goal, stepSize=StepSize,
 		goalThreshold = GoalThreshold, width = 10, height = 10, threshold = Threshold,
 		r=r, c=c, wheelLength = wheelLength, Ur = Ur, Ul = Ul, wheelRadius = wheelRadius,
-		weight = weight)
+		weight = weight, showExploration=int(Args.ShowExploration), showPath=int(Args.ShowPath))
 	solver.findPath()
 	print solver.trackIndex
 	l = wheelLength
